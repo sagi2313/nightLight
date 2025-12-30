@@ -1,0 +1,80 @@
+menu "NightLight Configuration"
+
+#from Kconfig.env_cap, generic config for esp32-C3
+    config ENV_GPIO_RANGE_MIN
+    int
+    default 0
+
+	config ENV_GPIO_RANGE_MAX
+	    int
+	    default 19
+	    # GPIOs 20/21 are always used by UART in examples
+	
+	config ENV_GPIO_IN_RANGE_MAX
+	    int
+	    default ENV_GPIO_RANGE_MAX
+	
+	config ENV_GPIO_OUT_RANGE_MAX
+	    int
+	    default ENV_GPIO_RANGE_MAX
+
+    config MAIN_LIGHT_OUT
+        int "GPIO output pin for main light"
+        range ENV_GPIO_RANGE_MIN ENV_GPIO_OUT_RANGE_MAX
+        default 8 if IDF_TARGET_ESP32C2 || IDF_TARGET_ESP32H2 || IDF_TARGET_ESP32C5 || IDF_TARGET_ESP32C61
+        default 6
+        help
+            GPIO pin number to be used as pwm driver to the main light.
+
+    config STATUS_LIGHT
+        int "GPIO output for s status indicator"
+        range ENV_GPIO_RANGE_MIN ENV_GPIO_OUT_RANGE_MAX
+        default 9 if IDF_TARGET_ESP32C2 || IDF_TARGET_ESP32H2 || IDF_TARGET_ESP32C5 || IDF_TARGET_ESP32C61
+        default 7
+        help
+            GPIO pin number to be used for a status indicator
+
+    config ONBOARD_RGB
+        int "GPIO output for s status indicator"
+        range ENV_GPIO_RANGE_MIN ENV_GPIO_OUT_RANGE_MAX
+        default 10
+        help
+            GPIO pin number connected to RGM ws2812 led on C3 board
+
+    config PIR_SENSOR_IN
+        int "GPIO input pin for pir sensor"
+        range ENV_GPIO_RANGE_MIN ENV_GPIO_IN_RANGE_MAX
+        default 0
+        help
+            GPIO pin number to be used as GPIO_INPUT_IO_0.
+
+    config FADE_IN_MS
+        int "Time for fade in of main light in millisec"
+        range 0 15000
+        default 2500
+        help
+            Main light will fade-in to max intensity in the given (in milliseconds) time
+
+    config WAIT_ON_MS
+        int "Time that main light will stay on in millisec"
+        range 0 15000
+        default 5000
+        help
+            Main light will stay at max intensity before a fade-out to 0 starts for the given (in milliseconds) time.
+            if presence is detected in the meanwhile, the timer is reset and starts from 0.
+
+    config FADE_OUT_MS
+        int "Time for fade out of main light in millisec"
+        range 0 15000
+        default 5000
+        help
+            Main light will fade-out to 0 intensity in the given (in milliseconds) time
+            
+    config MAX_INTEN
+        int "Maximum intensity for main light percent"
+        range 0 100
+        default 90
+        help
+            Main light will light up to this percent intensity
+
+endmenu
