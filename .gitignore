@@ -53,3 +53,13 @@ dkms.conf
 
 # debug information files
 *.dwo
+
+#other esp-idf and eclipse files
+sdkconfig.old
+pytest*py
+.settings/
+build/
+.project
+.cproject
+.clangd
+.clang-format
